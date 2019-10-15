@@ -28,6 +28,10 @@ Tutorial: https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/producersdk-
 - There's a sample app to upload videos to KVS.
 `./kinesis_video_gstreamer_sample_app -w <width> -h <height> -f <framerate> -b <bitrateInKBPS> Stream Name` (Note that not all resolution works, 640x480 works on Raspberry Pi 4 for me).
 
+### Trouble shooting
+
+There's potential fix for large latency: https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/troubleshooting.html#troubleshooting-general
+
 ## SageMaker notebook
 
 ### Access Permission
