@@ -1,5 +1,7 @@
 import os
 import time
+import matplotlib
+matplotlib.use("Pdf")
 from gluoncv import model_zoo, data, utils
 
 class ObjectDetection():
