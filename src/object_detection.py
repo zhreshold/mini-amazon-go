@@ -7,7 +7,7 @@ from gluoncv import model_zoo, data, utils
 class ObjectDetection():
 
     def __init__(self):
-        self.classes = ['juice', 'cocacola', 'cocacola-zero']
+        self.classes = ['cocacola', 'cocacola-zero', 'juice', 'noodles', 'hand']
         self.net = model_zoo.get_model('ssd_512_resnet50_v1_custom', classes=self.classes, pretrained_base=False)
         param_files = ([x for x in os.listdir('.') if x.endswith('.params')])
         selected = param_files[0]
@@ -21,7 +21,7 @@ class ObjectDetection():
 
 if __name__ == '__main__':
     objectDetection = ObjectDetection()
-    filename = '../images/test/1571183646.821318.jpg'
+    filename = '../images/v1/test/frame_1571435703.4214327.jpg'
     start = time.time()
     class_IDs, scores, bounding_boxes = objectDetection.detect(filename)
     end = time.time()
