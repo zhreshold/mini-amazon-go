@@ -2,8 +2,8 @@ import os
 import cv2
 import time
 import numpy as np
-import matplotlib
-matplotlib.use("Pdf")
+#import matplotlib  # only on raspberry pi
+#matplotlib.use("Pdf")  # only on raspberry pi
 import mxnet as mx
 from gluoncv import model_zoo, data, utils
 
@@ -22,6 +22,11 @@ class ObjectDetection():
         img = cv2.imread(filename)
         img = cv2.resize(img, (512, 512))
         x = self.transform_image(img)
+        class_IDs, scores, bounding_boxes = self.net(x)
+        return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
+    
+    def detect_image(self, img):
+        x, img = data.transforms.presets.ssd.transform_test([mx.nd.array(img)], short=512)
         class_IDs, scores, bounding_boxes = self.net(x)
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
 
