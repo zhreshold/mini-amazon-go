@@ -17,10 +17,19 @@ class ObjectDetection():
 
     def detect(self, filename):
         # x, img = data.transforms.presets.ssd.load_test(filename, short=512)
-        x, img = data.transforms.presets.ssd.transform_test([mx.nd.array(cv2.imread(filename))], short=512)
+        # x, img = data.transforms.presets.ssd.transform_test([mx.nd.array(cv2.imread(filename))], short=512)
+        img = cv2.imread(filename)
+        img = cv2.resize(img, (512, 512))
+        x = self.transform_image(img)
         class_IDs, scores, bounding_boxes = self.net(x)
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
 
+    def transform_image(self, image):
+        image = np.array(image) - np.array([123., 117., 104.])
+        image /= np.array([58.395, 57.12, 57.375])
+        image = image.transpose((2, 0, 1))
+        image = image[np.newaxis, :]
+        return mx.nd.array(image)
 
 if __name__ == '__main__':
     objectDetection = ObjectDetection()
