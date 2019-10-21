@@ -1,6 +1,7 @@
 import os
 import cv2
 import time
+import numpy as np
 import matplotlib
 matplotlib.use("Pdf")
 import mxnet as mx
