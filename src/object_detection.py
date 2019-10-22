@@ -15,6 +15,8 @@ class ObjectDetection():
         param_files = ([x for x in os.listdir('.') if x.endswith('.params')])
         selected = param_files[0]
         self.net.load_parameters(selected)
+        self.ctx = mx.gpu(0)
+        self.net.collect_params().reset_ctx(self.ctx)
 
     def detect(self, filename):
         # x, img = data.transforms.presets.ssd.load_test(filename, short=512)
@@ -22,12 +24,12 @@ class ObjectDetection():
         img = cv2.imread(filename)
         img = cv2.resize(img, (512, 512))
         x = self.transform_image(img)
-        class_IDs, scores, bounding_boxes = self.net(x)
+        class_IDs, scores, bounding_boxes = self.net(x.as_in_context(self.ctx))
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
     
     def detect_image(self, img):
         x, img = data.transforms.presets.ssd.transform_test([mx.nd.array(img)], short=512)
-        class_IDs, scores, bounding_boxes = self.net(x)
+        class_IDs, scores, bounding_boxes = self.net(x.as_in_context(self.ctx))
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
 
     def transform_image(self, image):
