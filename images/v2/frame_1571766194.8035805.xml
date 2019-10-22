@@ -28,7 +28,7 @@
 		<truncated>Unspecified</truncated>
 		<difficult>Unspecified</difficult>
 		<bndbox>
-			<xmin>0</xmin>
+			<xmin>1</xmin>
 			<ymin>213</ymin>
 			<xmax>211</xmax>
 			<ymax>480</ymax>
