@@ -12,6 +12,7 @@ class ObjectDetection():
     def __init__(self):
         self.classes = ['cocacola', 'cocacola-zero', 'juice', 'noodles', 'hand']
         self.net = model_zoo.get_model('ssd_512_resnet50_v1_custom', classes=self.classes, pretrained_base=False)
+        #self.net = model_zoo.get_model('yolo3_darknet53_custom', classes=self.classes, pretrained_base=False)
         param_files = ([x for x in os.listdir('.') if x.endswith('.params')])
         selected = param_files[0]
         self.net.load_parameters(selected)
@@ -29,6 +30,11 @@ class ObjectDetection():
     
     def detect_image(self, img):
         x, img = data.transforms.presets.ssd.transform_test([mx.nd.array(img)], short=512)
+        class_IDs, scores, bounding_boxes = self.net(x.as_in_context(self.ctx))
+        return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
+    
+    def detect_image_yolo(self, img):
+        x, img = data.transforms.presets.yolo.transform_test([mx.nd.array(img)], short=512)
         class_IDs, scores, bounding_boxes = self.net(x.as_in_context(self.ctx))
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
 
