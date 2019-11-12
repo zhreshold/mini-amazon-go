@@ -8,16 +8,20 @@ import mxnet as mx
 from gluoncv import model_zoo, data, utils
 
 class ObjectDetection():
-
-    def __init__(self):
-        self.classes = ['cocacola', 'juice', 'noodles', 'hand']  # , 'cocacola-zero'
+    def __init__(self, param_file=None):
+        self.classes = ['cola', 'juice', 'noodles', 'hand']
         #self.net = model_zoo.get_model('ssd_512_resnet50_v1_custom', classes=self.classes, pretrained_base=False)
         self.net = model_zoo.get_model('yolo3_darknet53_custom', classes=self.classes, pretrained_base=False)
-        param_files = ([x for x in os.listdir('.') if x.endswith('.params')])
-        selected = param_files[0]
-        self.net.load_parameters(selected)
+        if param_file is None:
+            param_files = ([x for x in os.listdir('.') if x.endswith('.params')])
+            selected = param_files[-1]
+            param_file = selected
+            print('Loaded from params file: ', selected)
+        self.net.load_parameters(param_file)
         self.ctx = mx.gpu(0)
         self.net.collect_params().reset_ctx(self.ctx)
+        self.net.set_nms(nms_thresh=0.3, nms_topk=20, post_nms=10)  # max objects 20
+        self.net.hybridize(static_alloc=True, static_shape=True)
 
     def detect(self, filename):
         # x, img = data.transforms.presets.ssd.load_test(filename, short=512)
@@ -29,11 +33,6 @@ class ObjectDetection():
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
     
     def detect_image(self, img):
-        x, img = data.transforms.presets.ssd.transform_test([mx.nd.array(img)], short=512)
-        class_IDs, scores, bounding_boxes = self.net(x.as_in_context(self.ctx))
-        return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()
-    
-    def detect_image_yolo(self, img):
         x, img = data.transforms.presets.yolo.transform_test([mx.nd.array(img)], short=512)
         class_IDs, scores, bounding_boxes = self.net(x.as_in_context(self.ctx))
         return class_IDs.asnumpy(), scores.asnumpy(), bounding_boxes.asnumpy()

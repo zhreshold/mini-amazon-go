@@ -49,3 +49,11 @@ See [src/training_object_detector_yolo3.ipynb](src/training_object_detector_yolo
 Or see [src/training_object_detector.ipynb](src/training_object_detector.ipynb) and [src/test_object_detector.ipynb](src/test_object_detector.ipynb) (SSD)
 
 Or see [Beijing CV hackathon](https://github.com/hetong007/d2l-1day-cv-hackathon)
+
+## Evaluation
+
+The evaluation of the final product will be evaluated with the following metrics, each with scale from 0 to 10.
+
+- Accuracy: percentage of correctly detected transaction movements (grab cola + return cola is regarded as two transcations rather than one). Scale the percentage to 0 - 10
+- UX(User experience): how satisfying the overall user experience is. Rated to (0, 10) by each group.
+- Innovation: how you bring cool technologies into the pipeline. Rated to (0, 10) by each group.

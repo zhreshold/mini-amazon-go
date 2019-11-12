@@ -1,5 +1,6 @@
 # User defined
 .DS_Store
+*.params
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
