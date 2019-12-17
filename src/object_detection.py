@@ -10,7 +10,7 @@ from gluoncv import model_zoo, data, utils
 class ObjectDetection():
 
     def __init__(self):
-        self.classes = ['cocacola', 'juice', 'noodles', 'hand']  # , 'cocacola-zero'
+        self.classes = ['cocacola', 'noodles', 'hand', 'fake']  # , 'cocacola-zero', 'juice'
         #self.net = model_zoo.get_model('ssd_512_resnet50_v1_custom', classes=self.classes, pretrained_base=False)
         self.net = model_zoo.get_model('yolo3_darknet53_custom', classes=self.classes, pretrained_base=False)
         param_files = ([x for x in os.listdir('.') if x.endswith('.params')])
